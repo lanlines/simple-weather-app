@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; background: #f0f0f0; }
+        .container { max-width: 500px; margin: 0 auto; }
+        .weather-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        input, button { 
+            padding: 12px; 
+            margin: 5px; 
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button { 
+            background: #007cba; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+        }
+        button:hover { background: #005a87; }
+        .error { color: red; background: #ffe6e6; padding: 10px; border-radius: 5px; }
+        .temp { font-size: 2em; color: #007cba; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Weather App</h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name (e.g., Cebu)" required>
+            <button type="submit">Get Weather</button>
+        </form>
+        
+        {% if weather_data %}
+            <div class="weather-card">
+                <h2>📍 {{ weather_data.city }}</h2>
+                <div class="temp">{{ weather_data.temperature }}°C</div>
+                <p><strong>🌤️ Condition:</strong> {{ weather_data.description|title }}</p>
+                {% if weather_data.humidity != 'N/A' %}
+                <p><strong>💧 Humidity:</strong> {{ weather_data.humidity }}%</p>
+                {% endif %}
+                <p><strong>💨 Wind Speed:</strong> {{ weather_data.wind_speed }} km/h</p>
+                {% if weather_data.feels_like %}
+                <p><strong>🌡️ Feels Like:</strong> {{ weather_data.feels_like }}°C</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
