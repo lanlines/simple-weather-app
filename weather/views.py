@@ -8,7 +8,7 @@ def index(request):
         city = request.POST['city'].strip()
         
         # Using wttr.in - no API key required
-        url = f'http://wttr.in/{city}?format=j1'
+        url = f'https://wttr.in/{city}?format=j1'
         
         try:
             response = requests.get(url, timeout=10)
